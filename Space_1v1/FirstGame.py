@@ -20,7 +20,7 @@ WINNER_FONT = pygame.font.SysFont('comicsans', 100)
 
 FPS = 60
 VEL = 5
-BULLETS_VEL = 20
+BULLETS_VEL = 15
 MAX_BULLETS = 4
 PATH = 'H:\Faecher\Python\game_dicator\Space_1v1'
 
@@ -131,7 +131,7 @@ def main():
                     yellow_bullets.append(bullet)
                     BULLET_FIRE_SOUND.play()
 
-                if event.key == pygame.K_MINUS and len(red_bullets) < MAX_BULLETS:
+                if event.key == pygame.K_KP0 and len(red_bullets) < MAX_BULLETS:
                     bullet = pygame.Rect(red.x, red.y + red.height//2 - 2, 10, 5)
                     red_bullets.append(bullet)
                     BULLET_FIRE_SOUND.play()
