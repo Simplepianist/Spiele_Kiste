@@ -1,28 +1,35 @@
 import pygame
+import random
+import time
 
-#Parameter
-WIDTH, HEIGHT = 800, 500
-WIN = pygame.display.set_mode((WIDTH, HEIGHT))
+from pygame import display
 
-BLACK = (0,0,0)
-FPS = 60
+pygame.init()
 
-
-
-
+window = pygame.display.set_mode((640, 480))
 
 pygame.display.set_caption("Hangman")
 
-def draw_window():
+#Farben
+white = (255, 255, 255)
+black = (0, 0, 0)
+green = (0, 255, 0)
+blue = (0, 0, 128)
+
+font = pygame.font.Font("freesansbold.ttf", 40)
+text = font.render("Hangman", True, black)
+
+textRect = text.get_rect()
+textRect.center = (640 // 2, 30)
+
+while True:
+    window.fill(white)
+
+    window.blit(text, textRect)
+
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            quit()
     
     pygame.display.update()
-
-def main():
-    draw_window
-    clock = pygame.time.Clock()
-    run = True
-    while run:
-        clock.tick(FPS)
-
-if __name__ == "__main__":
-    main()
