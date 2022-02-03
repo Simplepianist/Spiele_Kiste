@@ -22,7 +22,7 @@ FPS = 60
 VEL = 5
 BULLETS_VEL = 20
 MAX_BULLETS = 4
-PATH = 'H:\Faecher\Python\python-projects\FirstGame'
+PATH = 'H:\Faecher\Python\python-projects\Space_1v1'
 
 BULLET_HIT_SOUND = pygame.mixer.Sound(os.path.join(PATH, 'Assets', 'explosion.mp3')) 
 BULLET_FIRE_SOUND = pygame.mixer.Sound(os.path.join(PATH, 'Assets', 'laser.mp3')) 
