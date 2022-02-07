@@ -24,23 +24,23 @@ BULLETS_VEL = 15
 MAX_BULLETS = 4
 PATH = 'H:\Faecher\Python\game_dicator\Space_1v1'
 
-BULLET_HIT_SOUND = pygame.mixer.Sound(os.path.join(PATH, 'Assets', 'explosion.mp3')) 
-BULLET_FIRE_SOUND = pygame.mixer.Sound(os.path.join(PATH, 'Assets', 'laser.mp3')) 
+BULLET_HIT_SOUND = pygame.mixer.Sound('Assets\explosion.mp3')
+BULLET_FIRE_SOUND = pygame.mixer.Sound('Assets\laser.mp3')
 
 SPACESHIP_WIDTH, SPACESHIP_HEIGHT = 55, 40
 
 YELLOW_HIT = pygame.USEREVENT + 1
 RED_HIT = pygame.USEREVENT + 2
 
-YELLOW_SPACESHIP_IMAGE = pygame.image.load(os.path.join(PATH, 'Assets', 'spaceship_yellow.png'))
+YELLOW_SPACESHIP_IMAGE = pygame.image.load('Assets\spaceship_yellow.png')
 
 YELLOW_SPACESHIP = pygame.transform.rotate(pygame.transform.scale(YELLOW_SPACESHIP_IMAGE, (SPACESHIP_WIDTH, SPACESHIP_HEIGHT)), 270)
 
-RED_SPACESHIP_IMAGE = pygame.image.load(os.path.join('Assets', 'spaceship_red.png'))
+RED_SPACESHIP_IMAGE = pygame.image.load('Assets\spaceship_red.png')
 
 RED_SPACESHIP = pygame.transform.rotate(pygame.transform.scale(RED_SPACESHIP_IMAGE, (SPACESHIP_WIDTH, SPACESHIP_HEIGHT)), 90)
 
-SPACE = pygame.transform.scale(pygame.image.load(os.path.join(PATH, 'Assets', 'space.png')), (WIDTH, HEIGHT)) 
+SPACE = pygame.transform.scale(pygame.image.load('Assets\space.png'), (WIDTH, HEIGHT)) 
 
 def draw_window(red, yellow, red_bullets, yellow_bullets, red_health, yellow_health):
     WIN.blit(SPACE, (0, 0,))
