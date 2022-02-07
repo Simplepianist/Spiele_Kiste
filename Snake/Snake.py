@@ -153,13 +153,13 @@ class LOGIK:
             if block == self.fruit.pos:
                 self.fruit.new_pos()
     def is_defeat(self):
-        self.defeat = False
         if not 0 <= self.snake.body[0].x < cell_number or not 0 <= self.snake.body[0].y < cell_number:
             self.defeat = True
 
         for block in self.snake.body[1:]:
             if block == self.snake.body[0]:
                 self.defeat = True
+
         if self.defeat:
             screen.fill("blue")
             game.message()
@@ -209,7 +209,6 @@ while True:
                 if event.key == pygame.K_r:
                     game.__init__()
                     game.draw_elements()
-
     else:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
