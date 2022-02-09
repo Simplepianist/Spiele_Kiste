@@ -1,17 +1,23 @@
-import sys
 import pygame
 import random
 from pygame.math import Vector2
 
+class LOGIK:
+    def __init__(self):
+        self.player = None
+        self.mode = None
+
+
+pygame.init()
+game_font = pygame.font.Font(None,25)
+cell_size = 25
+cell_number = 20
+game = LOGIK
+screen = pygame.display.set_mode((cell_number * cell_size, cell_number * cell_size))
+clock = pygame.time.Clock()
+SCREEN_UPDATE = pygame.USEREVENT
+pygame.time.set_timer(SCREEN_UPDATE, 150)
 while True:
-    pygame.init()
-    game_font = pygame.font.Font(None,25)
-    cell_size = 25
-    cell_number = 20
-    screen = pygame.display.set_mode((cell_number * cell_size, cell_number * cell_size))
-    clock = pygame.time.Clock()
-    SCREEN_UPDATE = pygame.USEREVENT
-    pygame.time.set_timer(SCREEN_UPDATE, 150)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
