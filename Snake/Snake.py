@@ -111,9 +111,9 @@ class LOGIK:
         self.defeat = False
 
     def message(self):
-        mesg = pygame.font.SysFont(None,33).render("You Lost! Q for Quiting and R to Play again", True, (255,0,0))
+        mesg = pygame.font.SysFont(None,33).render("You Lost! Q for Quiting and R to Play again", True, (255, 255, 255))
         mes_rec = mesg.get_rect(center = (cell_number * cell_size / 2,cell_number * cell_size / 3))
-        scoreend = pygame.font.SysFont(None,33).render("Score was: " + str(len(self.snake.body) - 3), True, (255,0,0))
+        scoreend = pygame.font.SysFont(None,33).render("Score was: " + str(len(self.snake.body) - 3), True, (255,255,255))
         screen.blit(mesg, mes_rec)
         scoreend_rec = scoreend.get_rect(center = (cell_number * cell_size / 2,cell_number * cell_size / 2))
         screen.blit(scoreend, scoreend_rec)
@@ -161,7 +161,7 @@ class LOGIK:
                 self.defeat = True
 
         if self.defeat:
-            screen.fill("blue")
+            screen.fill("red")
             game.message()
             pygame.display.update()
         return self.defeat
@@ -177,7 +177,7 @@ class LOGIK:
     def end_game(self):
         end_font = pygame.font.Font(None,60)
         end_text = "Drücke q um das Spiel zu beenden oder <Enter> zum neustarten"
-        end_surface = end_font.render(end_text,True,(56,74,12))
+        end_surface = end_font.render(end_text,True,(255,0,0))
         pos_x = cell_number * cell_size / 2
         pos_y = cell_number * cell_size / 2
         end_rec = end_surface.get_rect(center = (pos_x,pos_y))
