@@ -1,79 +1,81 @@
-import pygame
-import sys
+import pygame, sys
+from pygame.locals import *
+import random
 
 pygame.init()
 
-# Display Stuff
-screenx = 1000
-screeny = 900
-screen = pygame.display.set_mode((screenx, screeny))
-pygame.display.set_caption('Block Runner')
-clock = pygame.time.Clock()
-image = pygame.image.load('assets/tank_rot.png')
+FPS = 60
+FramePerSec = pygame.time.Clock()
 
-# Color Stuff
-red = (255, 0, 0)
-green = (0, 255, 0)
-blue = (0, 0, 255)
-white = (255, 255, 255)
-black = (0, 0, 0)
+BLUE = (0, 0, 255)
+RED = (255, 0, 0)
+GREEN = (0, 255, 0)
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
 
-# Variables
-x_blocky = 50
-y_blocky = 750
-blocky_y_move = 0
-blocky_x_move = 0
+SCREEN_WIDTH = 400
+SCREEN_HEIGHT = 600
+DISPLAYSURF = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+DISPLAYSURF.fill(WHITE)
+pygame.display.set_caption("Game")
 
 
-# Animations
-def Blocky(x_blocky, y_blocky, image):
-        screen.blit(image, (x_blocky, y_blocky))
+class Enemy(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.image.load("assets/tank_rot.png")
+        self.rect = self.image.get_rect()
+        self.rect.center = (random.randint(40, SCREEN_WIDTH - 40), 0)
+
+    def move(self):
+        self.rect.move_ip(0, 10)
+        if (self.rect.bottom > 600):
+            self.rect.top = 0
+            self.rect.center = (random.randint(30, 370), 0)
+
+    def draw(self, surface):
+        surface.blit(self.image, self.rect)
 
 
-# Game Loop
-game_over = False
-while not game_over:
+class Player(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.image.load("assets/tank_gelb.png")
+        self.rect = self.image.get_rect()
+        self.rect.center = (160, 520)
+
+    def update(self):
+        pressed_keys = pygame.key.get_pressed()
+        # if pressed_keys[K_UP]:
+        # self.rect.move_ip(0, -5)
+        # if pressed_keys[K_DOWN]:
+        # self.rect.move_ip(0,5)
+
+        if self.rect.left > 0:
+            if pressed_keys[K_LEFT]:
+                self.rect.move_ip(-5, 0)
+        if self.rect.right < SCREEN_WIDTH:
+            if pressed_keys[K_RIGHT]:
+                self.rect.move_ip(5, 0)
+
+    def draw(self, surface):
+        surface.blit(self.image, self.rect)
+
+
+P1 = Player()
+E1 = Enemy()
+
+while True:
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
+        if event.type == QUIT:
             pygame.quit()
-            quit()
+            sys.exit()
+    P1.update()
+    E1.move()
 
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_UP:
-                blocky_y_move = -1
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_UP:
-                blocky_y_move = 0
+    DISPLAYSURF.fill(WHITE)
+    P1.draw(DISPLAYSURF)
+    E1.draw(DISPLAYSURF)
 
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_DOWN:
-                blocky_y_move = 1
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_DOWN:
-                blocky_y_move = 0
-
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_RIGHT:
-                blocky_x_move = 1
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_RIGHT:
-                blocky_x_move = 0
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT:
-                blocky_x_move = -1
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_LEFT:
-                blocky_x_move = 0
-        if x_blocky > 870 or x_blocky < 0:
-            print(' X Border')
-
-        if y_blocky > 750 or y_blocky < 2:
-            print(' Y Border')
-
-    y_blocky += blocky_y_move
-    x_blocky += blocky_x_move
-
-    screen.fill(white)
-    Blocky(x_blocky, y_blocky, image)
     pygame.display.update()
-clock.tick(60)
+    FramePerSec.tick(FPS)
