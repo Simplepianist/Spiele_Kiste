@@ -39,22 +39,21 @@ class SNAKE:
             elif index == len(self.body) - 1:
                 screen.blit(self.tail, snake_rect)
             else:
-                previous_block = self.body[index + 1] -block
-                next_block = self.body[index - 1] -block
+                previous_block = self.body[index + 1] - block
+                next_block = self.body[index - 1] - block
                 if previous_block.x == next_block.x:
-                    screen.blit(self.body_vert,snake_rect)
+                    screen.blit(self.body_vert, snake_rect)
                 elif previous_block.y == next_block.y:
-                   screen.blit(self.body_hor, snake_rect)
+                    screen.blit(self.body_hor, snake_rect)
                 else:
                     if previous_block.x == -1 and next_block.y == -1 or previous_block.y == -1 and next_block.x == -1:
-                        screen.blit(self.body_tl,snake_rect)
+                        screen.blit(self.body_tl, snake_rect)
                     elif previous_block.x == -1 and next_block.y == 1 or previous_block.y == 1 and next_block.x == -1:
-                        screen.blit(self.body_bl,snake_rect)
+                        screen.blit(self.body_bl, snake_rect)
                     elif previous_block.x == 1 and next_block.y == -1 or previous_block.y == -1 and next_block.x == 1:
-                        screen.blit(self.body_tr,snake_rect)
+                        screen.blit(self.body_tr, snake_rect)
                     elif previous_block.x == 1 and next_block.y == 1 or previous_block.y == 1 and next_block.x == 1:
-                        screen.blit(self.body_br,snake_rect)
-
+                        screen.blit(self.body_br, snake_rect)
 
     def select_head(self):
         head_relation = self.body[1] - self.body[0]
@@ -90,6 +89,7 @@ class SNAKE:
     def add_part(self):
         self.new_part = True
 
+
 class FRUIT:
     def __init__(self):
         self.new_pos()
@@ -104,6 +104,7 @@ class FRUIT:
         self.y = random.randint(0, cell_number - 1)
         self.pos = Vector2(self.x, self.y)
 
+
 class LOGIK:
     def __init__(self):
         self.snake = SNAKE()
@@ -111,28 +112,29 @@ class LOGIK:
         self.defeat = False
 
     def message(self):
-        mesg = pygame.font.SysFont(None,33).render("You Lost! Q for Quiting and R to Play again", True, (255, 255, 255))
-        mes_rec = mesg.get_rect(center = (cell_number * cell_size / 2,cell_number * cell_size / 3))
-        scoreend = pygame.font.SysFont(None,33).render("Score was: " + str(len(self.snake.body) - 3), True, (255,255,255))
+        mesg = pygame.font.SysFont(None, 33).render("You Lost! Q for Quiting and R to Play again", True,
+                                                    (255, 255, 255))
+        mes_rec = mesg.get_rect(center=(cell_number * cell_size / 2, cell_number * cell_size / 3))
+        scoreend = pygame.font.SysFont(None, 33).render("Score was: " + str(len(self.snake.body) - 3), True,
+                                                        (255, 255, 255))
         screen.blit(mesg, mes_rec)
-        scoreend_rec = scoreend.get_rect(center = (cell_number * cell_size / 2,cell_number * cell_size / 2))
+        scoreend_rec = scoreend.get_rect(center=(cell_number * cell_size / 2, cell_number * cell_size / 2))
         screen.blit(scoreend, scoreend_rec)
 
     def create_playfield(self):
-        grass_color = (167,209,61)
+        grass_color = (167, 209, 61)
 
         for row in range(cell_number):
             if row % 2 == 0:
                 for col in range(cell_number):
                     if col % 2 == 0:
-                        grass_rect = pygame.Rect(col*cell_size,row * cell_size,cell_size,cell_size)
-                        pygame.draw.rect(screen,grass_color,grass_rect)
+                        grass_rect = pygame.Rect(col * cell_size, row * cell_size, cell_size, cell_size)
+                        pygame.draw.rect(screen, grass_color, grass_rect)
             else:
                 for col in range(cell_number):
                     if col % 2 == 1:
-                        grass_rect = pygame.Rect(col*cell_size,row * cell_size,cell_size,cell_size)
-                        pygame.draw.rect(screen,grass_color,grass_rect)
-
+                        grass_rect = pygame.Rect(col * cell_size, row * cell_size, cell_size, cell_size)
+                        pygame.draw.rect(screen, grass_color, grass_rect)
 
     def update(self):
         self.snake.move_snake()
@@ -152,6 +154,7 @@ class LOGIK:
         for block in self.snake.body[1:]:
             if block == self.fruit.pos:
                 self.fruit.new_pos()
+
     def is_defeat(self):
         if not 0 <= self.snake.body[0].x < cell_number or not 0 <= self.snake.body[0].y < cell_number:
             self.defeat = True
@@ -166,26 +169,24 @@ class LOGIK:
             pygame.display.update()
         return self.defeat
 
-
     def score(self):
         score_text = "Score: " + str(len(self.snake.body) - 3)
-        score_surface = game_font.render(score_text,True,(56,74,12))
-        score_rec = score_surface.get_rect(topleft = (0,0))
-        screen.blit(score_surface,score_rec)
-
+        score_surface = game_font.render(score_text, True, (56, 74, 12))
+        score_rec = score_surface.get_rect(topleft=(0, 0))
+        screen.blit(score_surface, score_rec)
 
     def end_game(self):
-        end_font = pygame.font.Font(None,60)
+        end_font = pygame.font.Font(None, 60)
         end_text = "Drücke q um das Spiel zu beenden oder <Enter> zum neustarten"
-        end_surface = end_font.render(end_text,True,(255,0,0))
+        end_surface = end_font.render(end_text, True, (255, 0, 0))
         pos_x = cell_number * cell_size / 2
         pos_y = cell_number * cell_size / 2
-        end_rec = end_surface.get_rect(center = (pos_x,pos_y))
-        screen.blit(end_surface,end_rec)
+        end_rec = end_surface.get_rect(center=(pos_x, pos_y))
+        screen.blit(end_surface, end_rec)
 
 
 pygame.init()
-game_font = pygame.font.Font(None,25)
+game_font = pygame.font.Font(None, 25)
 cell_size = 25
 cell_number = 20
 screen = pygame.display.set_mode((cell_number * cell_size, cell_number * cell_size))
@@ -229,8 +230,7 @@ while True:
                 if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                     if game.snake.direction != Vector2(-1, 0):
                         game.snake.direction = Vector2(1, 0)
-        screen.fill((0,210,30))
+        screen.fill((0, 210, 30))
         game.draw_elements()
         pygame.display.update()
         clock.tick(60)
-
