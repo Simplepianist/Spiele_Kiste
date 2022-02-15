@@ -109,9 +109,43 @@ class BLOCKS:
                    '.....']]
         self.blocks = [self.S, self.Z, self.I, self.O, self.J, self.L, self.T]
 
-    def generate_block(self):
-        select = randint(0, 6)
-        self.block = self.blocks[3]
+    def update_blocks(self, on_field, player, movement):
+        if not on_field:
+            self.spawn()
+            self.update_blocks(True, player,"UPDATE")
+        else:
+            if movement == "UPDATE":
+                if self.check_down():
+                    self.move_block()
+                    return True
+                else:
+                    return False
+            elif movement == "RIGHT" or movement == "LEFT":
+                self.check_and_move_side(movement)
+            elif movement == "ROTATE":
+                self.rotation()
+        return True
+
+
+    def check_down(self):
+        print("Checked down")
+
+    def rotation(self):
+        print("CHeck rotation")
+
+    def check_and_move_side(self, side):
+        if side == "RIGHT":
+            print("Check Right")
+        elif side == "LEFT":
+            print("move left")
+
+    def move_block(self):
+        print("Move down")
+
+
+    def spawn(self):
+        print("Spawn Block")
+
 
 
 class LOGIK:
@@ -121,6 +155,10 @@ class LOGIK:
         self.player2 = False
         self.player3 = False
         self.player4 = False
+        self.block1 = False
+        self.block2 = False
+        self.block3 = False
+        self.block4 = False
         self.mode = None
         self.block = BLOCKS()
 
@@ -308,51 +346,54 @@ class LOGIK:
         if player == 1:
             if self.player1:
                 if move == "UP":
-                    print("Player 1 Up")
+                    self.block1 = self.block.update_blocks(self.block1,1,"ROTATE")
                 elif move == "DOWN":
                     pygame.time.set_timer(UPDATE_PLAYER1, 100)
+                    self.block1 = self.block.update_blocks(self.block1, 1, "UPDATE")
                 elif move == "RIGHT":
-                    print("Player 1 RIGHT")
+                    self.block1 = self.block.update_blocks(self.block1,1,"RIGHT")
                 elif move == "LEFT":
-                    print("Player 1 LEFT")
+                    self.block1 = self.block.update_blocks(self.block1,1,"LEFT")
                 elif move == "RELEASE":
                     pygame.time.set_timer(UPDATE_PLAYER1, 150)
+                elif move == "UPDATE":
+                    self.block1 = self.block.update_blocks(self.block1,1,"UPDATE")
         elif player == 2:
             if self.player2:
                 if move == "UP":
-                    print("Player 2 Up")
+                    self.block1 = self.block.update_blocks(self.block2,2,"ROTATE")
                 elif move == "DOWN":
-                    pygame.time.set_timer(UPDATE_PLAYER1, 100)
+                    pygame.time.set_timer(UPDATE_PLAYER2, 100)
                 elif move == "RIGHT":
                     print("Player 2 RIGHT")
                 elif move == "LEFT":
                     print("Player 2 LEFT")
                 elif move == "RELEASE":
-                    pygame.time.set_timer(UPDATE_PLAYER1, 150)
+                    pygame.time.set_timer(UPDATE_PLAYER2, 150)
         elif player == 3:
             if self.player3:
                 if move == "UP":
-                    print("Player 3 Up")
+                    self.block1 = self.block.update_blocks(self.block3, 3, "ROTATE")
                 elif move == "DOWN":
-                    pygame.time.set_timer(UPDATE_PLAYER1, 100)
+                    pygame.time.set_timer(UPDATE_PLAYER3, 100)
                 elif move == "RIGHT":
                     print("Player 3 RIGHT")
                 elif move == "LEFT":
                     print("Player 3 LEFT")
                 elif move == "RELEASE":
-                    pygame.time.set_timer(UPDATE_PLAYER1, 150)
+                    pygame.time.set_timer(UPDATE_PLAYER3, 150)
         elif player == 4:
             if self.player4:
                 if move == "UP":
-                    print("Player 4 Up")
+                    self.block1 = self.block.update_blocks(self.block4,4,"ROTATE")
                 elif move == "DOWN":
-                    pygame.time.set_timer(UPDATE_PLAYER1, 100)
+                    pygame.time.set_timer(UPDATE_PLAYER4, 100)
                 elif move == "RIGHT":
                     print("Player 4 RIGHT")
                 elif move == "LEFT":
                     print("Player 4 LEFT")
                 elif move == "RELEASE":
-                    pygame.time.set_timer(UPDATE_PLAYER1, 150)
+                    pygame.time.set_timer(UPDATE_PLAYER4, 150)
 
     def update_field(self, field):
         if field == 1:
@@ -548,6 +589,10 @@ else:
                     game.player_movement(4, "LEFT")
                 if event.key == pygame.K_KP_6:
                     game.player_movement(4, "RIGHT")
+        game.player_movement(1,"UPDATE")
+        game.player_movement(2, "UPDATE")
+        game.player_movement(3, "UPDATE")
+        game.player_movement(4, "UPDATE")
         screen.fill((1, 125, 26))
         game.create_playfield()
         pygame.display.update()
