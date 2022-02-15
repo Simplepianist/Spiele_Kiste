@@ -4,149 +4,218 @@ from random import randint
 from pygame.math import Vector2
 
 
+global game1_rect
+global game2_rect
+global game3_rect
+global game4_rect
+global speicher1
+global speicher2
+global speicher3
+global speicher4
+speicher1 = []
+speicher2 = []
+speicher3 = []
+speicher4 = []
+
+
 class BLOCKS:
     def __init__(self):
-        self.S = [['.....',
-                   '......',
-                   '..00..',
-                   '.00...',
-                   '.....'],
-                  ['.....',
-                   '..0..',
-                   '..00.',
-                   '...0.',
-                   '.....']]
+        self.S = [['0110',
+                   '1100',
+                   '0000',
+                   '0000'],
+                  ['0100',
+                   '0110',
+                   '0010'],
+                  ['0000',
+                   '0110',
+                   '1100',
+                   '0000'],
+                  ['1000',
+                   '1100',
+                   '0100',
+                   '0000']]
 
-        self.Z = [['.....',
-                   '.....',
-                   '.00..',
-                   '..00.',
-                   '.....'],
-                  ['.....',
-                   '..0..',
-                   '.00..',
-                   '.0...',
-                   '.....']]
+        self.Z = [['1100',
+                   '0110',
+                   '0000',
+                   '0000'],
+                  ['0010',
+                   '0110',
+                   '0100',
+                   '0000'],
+                  ['0000',
+                   '1100',
+                   '0110',
+                   '0000'],
+                  ['0100',
+                   '1100',
+                   '1000',
+                   '0000']]
 
-        self.I = [['..0..',
-                   '..0..',
-                   '..0..',
-                   '..0..',
-                   '.....'],
-                  ['.....',
-                   '0000.',
-                   '.....',
-                   '.....',
-                   '.....']]
+        self.I = [['0000',
+                   '1111',
+                   '0000',
+                   '0000'],
+                  ['0010',
+                   '0010',
+                   '0010',
+                   '0010'],
+                  ['0000',
+                   '0000',
+                   '1111',
+                   '0100'],
+                  ['0100',
+                   '0100',
+                   '0100',
+                   '0100']]
 
-        self.O = [['.....',
-                   '.....',
-                   '.00..',
-                   '.00..',
-                   '.....']]
+        self.O = [['0000',
+                   '0110',
+                   '0110',
+                   '0000']]
 
-        self.J = [['.....',
-                   '.0...',
-                   '.000.',
-                   '.....',
-                   '.....'],
-                  ['.....',
-                   '..00.',
-                   '..0..',
-                   '..0..',
-                   '.....'],
-                  ['.....',
-                   '.....',
-                   '.000.',
-                   '...0.',
-                   '.....'],
-                  ['.....',
-                   '..0..',
-                   '..0..',
-                   '.00..',
-                   '.....']]
+        self.J = [['1000',
+                   '1110',
+                   '0000',
+                   '0000'],
+                  ['0110',
+                   '0100',
+                   '0100',
+                   '0000'],
+                  ['0000',
+                   '1110',
+                   '0010',
+                   '0000'],
+                  ['0100',
+                   '0100',
+                   '1100',
+                   '0000']]
 
-        self.L = [['.....',
-                   '...0.',
-                   '.000.',
-                   '.....',
-                   '.....'],
-                  ['.....',
-                   '..0..',
-                   '..0..',
-                   '..00.',
-                   '.....'],
-                  ['.....',
-                   '.....',
-                   '.000.',
-                   '.0...',
-                   '.....'],
-                  ['.....',
-                   '.00..',
-                   '..0..',
-                   '..0..',
-                   '.....']]
+        self.L = [['0010',
+                   '1110',
+                   '0000',
+                   '0000'],
+                  ['0100',
+                   '0100',
+                   '0110',
+                   '0000'],
+                  ['0000',
+                   '1110',
+                   '1000',
+                   '0000'],
+                  ['1100',
+                   '0100',
+                   '0100',
+                   '0000']]
 
-        self.T = [['.....',
-                   '..0..',
-                   '.000.',
-                   '.....',
-                   '.....'],
-                  ['.....',
-                   '..0..',
-                   '..00.',
-                   '..0..',
-                   '.....'],
-                  ['.....',
-                   '.....',
-                   '.000.',
-                   '..0..',
-                   '.....'],
-                  ['.....',
-                   '..0..',
-                   '.00..',
-                   '..0..',
-                   '.....']]
+        self.T = [['0100',
+                   '1110',
+                   '0000',
+                   '0000'],
+                  ['0100',
+                   '0110',
+                   '0100',
+                   '0000'],
+                  ['0000',
+                   '1110',
+                   '0100',
+                   '0000'],
+                  ['0100',
+                   '1100',
+                   '0100',
+                   '0000']]
+
         self.blocks = [self.S, self.Z, self.I, self.O, self.J, self.L, self.T]
+        self.pos1 = []
+        self.pos2 = []
+        self.pos3 = []
+        self.pos4 = []
 
-    def update_blocks(self, on_field, player, movement):
-        if not on_field:
-            self.spawn()
-            self.update_blocks(True, player,"UPDATE")
+    def update_blocks(self, placed, player, movement):
+        if placed:
+            self.spawn(player)
+            return False
         else:
             if movement == "UPDATE":
-                if self.check_down():
-                    self.move_block()
-                    return True
-                else:
-                    return False
+                self.move_block(player)
             elif movement == "RIGHT" or movement == "LEFT":
-                self.check_and_move_side(movement)
+                self.check_and_move_side(movement, player)
             elif movement == "ROTATE":
-                self.rotation()
-        return True
+                self.rotation(player)
 
 
-    def check_down(self):
+    def check_down(self,player):
         print("Checked down")
 
-    def rotation(self):
-        print("CHeck rotation")
+    def rotation(self,player):
+        print("Check rotation")
 
-    def check_and_move_side(self, side):
+    def check_and_move_side(self, side,player):
         if side == "RIGHT":
             print("Check Right")
         elif side == "LEFT":
             print("move left")
 
-    def move_block(self):
+    def move_block(self,player):
         print("Move down")
 
+    def spawn(self,player):
+        index = 1
+        for line in self.blocks[3][0]:
+            if "1" in line:
+                for pos,zustand in enumerate(line):
+                    pos = pos + 4
+                    if player == 1:
+                        self.pos1.append(Vector2(pos,index))
+                    elif player == 2:
+                        self.pos2.append(Vector2(pos,index))
+                    elif player == 3:
+                        self.pos3.append(Vector2(pos,index))
+                    elif player == 4:
+                        self.pos4.append(Vector2(pos, index))
+        self.generate_spawn(player)
 
-    def spawn(self):
-        print("Spawn Block")
+    def generate_spawn(self,player):
+        if player == 1:
+            for vect in self.pos1:
+                for vec in speicher1:
+                    if vec.x == vect.x and vec.y == vect.y:
+                        self.game_over(player)
+                    else:
+                        speicher1.append(vect)
+                rect = pygame.Rect(game1_rect.x + vect.x * cell_size,game1_rect.y + vect.y * cell_size,cell_size,cell_size)
+                pygame.draw.rect(screen, (211,226,0), rect)
+        elif player == 2:
+                for vect in self.pos2:
+                    for vec in speicher2:
+                        if vec.x == vect.x and vec.y == vect.y:
+                            self.game_over(player)
+                        else:
+                            speicher2.append(vect)
+                    rect = pygame.Rect(game2_rect.x + vect.x * cell_size, game2_rect.y + vect.y * cell_size, cell_size, cell_size)
+                    pygame.draw.rect(screen, (211, 226, 0), rect)
+        elif player == 3:
+                for vect in self.pos3:
+                    for vec in speicher3:
+                        if vec.x == vect.x and vec.y == vect.y:
+                            self.game_over(player)
+                        else:
+                            speicher3.append(vect)
+                    rect = pygame.Rect(game3_rect.x + vect.x * cell_size, game3_rect.y + vect.y * cell_size, cell_size, cell_size)
+                    pygame.draw.rect(screen, (211, 226, 0), rect)
+        elif player == 4:
+                for vect in self.pos4:
+                    for vec in speicher4:
+                        if vec.x == vect.x and vec.y == vect.y:
+                            self.game_over(player)
+                        else:
+                            speicher4.append(vect)
+                    rect = pygame.Rect(game4_rect.x + vect.x * cell_size, game4_rect.y + vect.y * cell_size, cell_size, cell_size)
+                    pygame.draw.rect(screen, (211, 226, 0), rect)
 
-
+    def game_over(self,player):
+        print("Defeat Player" + player)
 
 class LOGIK:
     def __init__(self):
@@ -155,12 +224,13 @@ class LOGIK:
         self.player2 = False
         self.player3 = False
         self.player4 = False
-        self.block1 = False
-        self.block2 = False
-        self.block3 = False
-        self.block4 = False
+        self.block1 = True
+        self.block2 = True
+        self.block3 = True
+        self.block4 = True
         self.mode = None
         self.block = BLOCKS()
+
 
     def player_settings(self):
         player_font = pygame.font.Font(None, 60)
@@ -270,8 +340,8 @@ class LOGIK:
             control4_right_rect = pygame.Rect(6.2 * control_width + 15, control_hight + 30, 30, 30)
 
         if self.player == 1:
-            game_rect = pygame.Rect(width, height, full_width_field, full_height_field)
-            pygame.draw.rect(screen, (0, 0, 0), game_rect)
+            game1_rect = pygame.Rect(width, height, full_width_field, full_height_field)
+            pygame.draw.rect(screen, (0, 0, 0), game1_rect)
             screen.blit(up_1, control1_up_rect)
             screen.blit(down_1, control1_down_rect)
             screen.blit(left_1, control1_left_rect)
@@ -398,16 +468,16 @@ class LOGIK:
     def update_field(self, field):
         if field == 1:
             if self.player1:
-                print("Update 1")
+                self.player_movement(1, "UPDATE")
         elif field == 2:
             if self.player2:
-                print("Update 2")
+                self.player_movement(2, "UPDATE")
         elif field == 3:
             if self.player3:
-                print("")
+                self.player_movement(3, "UPDATE")
         elif field == 4:
             if self.player4:
-                print("")
+                self.player_movement(4, "UPDATE")
 
 
 pygame.init()
@@ -418,6 +488,7 @@ player_y = 600
 player_settings = pygame.display.set_mode((player_x, player_y))
 clock = pygame.time.Clock()
 player = False
+
 while not player:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -469,8 +540,19 @@ pygame.time.set_timer(UPDATE_PLAYER1, 150)
 if game.player == 1:
     border_height = 200
     border_width = 150
-    screen = pygame.display.set_mode(
-        (border_width + field_cell_width * cell_size, field_cell_height * cell_size + border_height))
+else:
+    border_height = 200
+    border_width = 100
+width = border_width / 2
+height = border_height / 2
+full_width_field = field_cell_width * cell_size
+full_height_field = field_cell_height * cell_size
+game1_rect = pygame.Rect(width, height, full_width_field, full_height_field)
+game2_rect = pygame.Rect(2 * width + full_width_field, height, full_width_field, full_height_field)
+game3_rect = pygame.Rect(3 * width + full_width_field * 2, height, full_width_field, full_height_field)
+game4_rect = pygame.Rect(4 * width + full_width_field * 3, height, full_width_field, full_height_field)
+if game.player == 1:
+    screen = pygame.display.set_mode((border_width + field_cell_width * cell_size, field_cell_height * cell_size + border_height))
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -480,7 +562,7 @@ if game.player == 1:
                 game.update_field(1)
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_w:
-                    game.player_movement(1, "UP")
+                    game.player_movement(1, "ROTATE")
                 if event.key == pygame.K_s:
                     game.player_movement(1, "DOWN")
                 if event.key == pygame.K_a:
@@ -498,8 +580,7 @@ else:
     pygame.time.set_timer(UPDATE_PLAYER3, 150)
     UPDATE_PLAYER4 = pygame.USEREVENT
     pygame.time.set_timer(UPDATE_PLAYER4, 150)
-    border_height = 200
-    border_width = 100
+
     screen = pygame.display.set_mode((
                                      border_width * game.player * game.calc_right_width() + field_cell_width * cell_size * game.player,
                                      (field_cell_height * cell_size + border_height)))
@@ -589,10 +670,7 @@ else:
                     game.player_movement(4, "LEFT")
                 if event.key == pygame.K_KP_6:
                     game.player_movement(4, "RIGHT")
-        game.player_movement(1,"UPDATE")
-        game.player_movement(2, "UPDATE")
-        game.player_movement(3, "UPDATE")
-        game.player_movement(4, "UPDATE")
+
         screen.fill((1, 125, 26))
         game.create_playfield()
         pygame.display.update()
