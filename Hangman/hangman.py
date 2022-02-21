@@ -1,9 +1,5 @@
 import pygame
-import random
-import time
 
-from pygame import display
-from pygame import image
 
 pygame.init()
 
