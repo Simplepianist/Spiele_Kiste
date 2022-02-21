@@ -3,6 +3,7 @@ import random
 import time
 
 from pygame import display
+from pygame import image
 
 pygame.init()
 
@@ -22,6 +23,7 @@ text = font.render("Hangman", True, black)
 textRect = text.get_rect()
 textRect.center = (640 // 2, 30)
 
+pfahl = pygame.image.load("/Assets/Pfahl.png")
 while True:
     window.fill(white)
 
