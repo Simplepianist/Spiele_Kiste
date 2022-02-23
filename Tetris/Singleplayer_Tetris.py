@@ -1,3 +1,5 @@
+import sys
+
 import pygame
 import random
 
@@ -61,11 +63,16 @@ class Tetris:
         self.field = []
         self.score = 0
         self.state = "start"
-        self.breakline = pygame.mixer.Sound('assets/break.wav')
-        self.end = pygame.mixer.Sound('assets/end.wav')
-        self.endplaying = False
-        pygame.mixer.music.load('assets/music.mp3')
-        pygame.mixer.music.play(-1)
+        self.sound = True
+        try:
+            self.breakline = pygame.mixer.Sound('assets/break.wav')
+            self.end = pygame.mixer.Sound('assets/end.wav')
+            self.endplaying = False
+            pygame.mixer.music.load('assets/music.mp3')
+            pygame.mixer.music.play(-1)
+        except:
+            self.sound = False
+
         for i in range(height):
             new_line = []
             for j in range(width):
@@ -96,13 +103,15 @@ class Tetris:
                 if self.field[i][j] == 0:
                     zeros += 1
             if zeros == 0:
-                pygame.mixer.music.pause()
-                self.breakline.play()
+                if self.sound:
+                    pygame.mixer.music.pause()
+                    self.breakline.play()
                 lines += 1
                 for i1 in range(i, 1, -1):
                     for j in range(self.width):
                         self.field[i1][j] = self.field[i1 - 1][j]
-                pygame.mixer.music.unpause()
+                if self.sound:
+                    pygame.mixer.music.unpause()
         self.score += lines ** 2
 
 
@@ -142,9 +151,10 @@ class Tetris:
 
     def end_message(self):
         if not self.endplaying:
-            self.endplaying = True
-            pygame.mixer.music.stop()
-            self.end.play()
+            if self.sound:
+                self.endplaying = True
+                pygame.mixer.music.stop()
+                self.end.play()
         screen.fill("red")
         mesg1 = pygame.font.SysFont(None, 33).render("You Lost! Q for Quiting", True,
                                                     WHITE)
@@ -222,6 +232,16 @@ while not done:
                     game.go_side(1)
                 if event.key == pygame.K_SPACE:
                     game.go_space()
+                if event.key == pygame.K_ESCAPE:
+                    pause = True
+                    while pause:
+                        for event2 in pygame.event.get():
+                            if event2.type == pygame.QUIT:
+                                pause = False
+                                done = True
+                            if event2.type == pygame.KEYDOWN:
+                                if event2.key == pygame.K_ESCAPE:
+                                    pause = False
 
 
         if event.type == pygame.KEYUP:
