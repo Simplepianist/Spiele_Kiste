@@ -28,6 +28,7 @@ class Figure:
     ]
 
     def __init__(self, x, y):
+
         self.x = x
         self.y = y
         element = random.randint(0, len(self.figures) - 1)
@@ -60,6 +61,11 @@ class Tetris:
         self.field = []
         self.score = 0
         self.state = "start"
+        self.breakline = pygame.mixer.Sound('assets/break.wav')
+        self.end = pygame.mixer.Sound('assets/end.wav')
+        self.endplaying = False
+        pygame.mixer.music.load('assets/music.mp3')
+        pygame.mixer.music.play(-1)
         for i in range(height):
             new_line = []
             for j in range(width):
@@ -82,6 +88,7 @@ class Tetris:
         return intersection
 
     def break_lines(self):
+
         lines = 0
         for i in range(1, self.height):
             zeros = 0
@@ -89,11 +96,15 @@ class Tetris:
                 if self.field[i][j] == 0:
                     zeros += 1
             if zeros == 0:
+                pygame.mixer.music.pause()
+                self.breakline.play()
                 lines += 1
                 for i1 in range(i, 1, -1):
                     for j in range(self.width):
                         self.field[i1][j] = self.field[i1 - 1][j]
+                pygame.mixer.music.unpause()
         self.score += lines ** 2
+
 
     def go_space(self):
         while not self.intersects():
@@ -130,6 +141,10 @@ class Tetris:
             self.figure.rotation = old_rotation
 
     def end_message(self):
+        if not self.endplaying:
+            self.endplaying = True
+            pygame.mixer.music.stop()
+            self.end.play()
         screen.fill("red")
         mesg1 = pygame.font.SysFont(None, 33).render("You Lost! Q for Quiting", True,
                                                     WHITE)
