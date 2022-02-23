@@ -13,6 +13,7 @@ colors = [
     (153,0,153),
     (255, 255, 153),
 ]
+musics = ['standard.mp3','tetris99.mp3','trap.mp3']
 
 
 class Figure:
@@ -68,7 +69,9 @@ class Tetris:
             self.breakline = pygame.mixer.Sound('assets/break.wav')
             self.end = pygame.mixer.Sound('assets/end.wav')
             self.endplaying = False
-            pygame.mixer.music.load('assets/music.mp3')
+            rng = random.randint(0,len(musics)-1)
+            mus = 'assets/' + musics[rng]
+            pygame.mixer.music.load(mus)
             pygame.mixer.music.play(-1)
         except:
             self.sound = False
