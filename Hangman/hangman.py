@@ -1,8 +1,5 @@
 import pygame
-import random
-import time
 
-from pygame import display
 
 pygame.init()
 
@@ -21,6 +18,15 @@ text = font.render("Hangman", True, black)
 
 textRect = text.get_rect()
 textRect.center = (640 // 2, 30)
+
+#Bilder einfügen
+pfahl = pygame.image.load('Assets/Pfahl.png')
+seil = pygame.image.load('Assets/Seil.png')
+koerper = pygame.image.load('Assets/Körper.png')
+kopf = pygame.image.load('Assets/Kopf.png')
+beine = pygame.image.load('Assets/Beine.png')
+arme = pygame.image.load('Assets/Arme.png')
+
 
 while True:
     window.fill(white)
