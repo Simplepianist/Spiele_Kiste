@@ -165,7 +165,6 @@ class Tetris:
         s.send("Died".encode("utf-8"))
         place = s.recv(1024).decode("utf-8")
         place = s.recv(1024).decode("utf-8")
-        print(place)
         mesg1 = pygame.font.SysFont(None, 33).render("You got " + place, True,
                                                     WHITE)
         mes_rec = mesg1.get_rect(center=( 400/ 2, 500 / 4))
@@ -191,7 +190,6 @@ while True:
     s.send("Ready".encode("utf-8"))
     msg = s.recv(1024).decode("utf-8")
     if first:
-        print(msg)
         first = False
     if msg.lower().__contains__("start"):
         break

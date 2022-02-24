@@ -38,22 +38,15 @@ def client(csocket):
                         csocket.sendall(reply.encode("utf-8"))
                     started = True
             elif ans == "Died" and not died:
-                print("died")
                 place = players - dead
                 dead += 1
                 reply = str(place) + ". Place"
-                print(reply)
                 died = True
-                print(died)
                 csocket.sendall(reply.encode("utf-8"))
                 csocket.sendall(reply.encode("utf-8"))
-            # print("players:", players)
-            # print("dead: ", dead)
-            # print(players-dead==1)
             if reply == "Died" and not died:
                 died = True
                 if players == 1:
-                    print("first")
                     csocket.sendall("1. Place".encode("utf-8"))
                     csocket.sendall("1. Place".encode("utf-8"))
                     players = 0
@@ -61,9 +54,7 @@ def client(csocket):
                     dead = 0
 
                 break
-            print(reply)
             if died and reply == "Waiting":
-                print("Dead but again")
                 place = players - dead
                 reply = str(place) + ". Place"
             csocket.sendall(reply.encode("utf-8"))
@@ -75,5 +66,4 @@ def client(csocket):
 
 while True:
     csocket, addr = s.accept()
-    print("Connection from: ", addr)
     start_new_thread(client, (csocket,))
