@@ -1,8 +1,10 @@
+import socket
 import sys
 
 import pygame
 import random
-
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.connect(("192.168.188.24", 5000))
 colors = [
     (0, 0, 0),
     (153, 255, 255),
@@ -14,7 +16,7 @@ colors = [
     (255, 255, 153),
 ]
 musics = ['standard.mp3','tetris99.mp3','trap.mp3']
-
+place = "Nope"
 
 class Figure:
     x = 0
@@ -159,20 +161,40 @@ class Tetris:
                 pygame.mixer.music.stop()
                 self.end.play()
         screen.fill("red")
-        mesg1 = pygame.font.SysFont(None, 33).render("You Lost! Q for Quiting", True,
-                                                    WHITE)
-        mesg2 = pygame.font.SysFont(None, 33).render("      R to Play again", True,
-                                                     WHITE)
 
+        s.send("Died".encode("utf-8"))
+        place = s.recv(1024).decode("utf-8")
+        place = s.recv(1024).decode("utf-8")
+        print(place)
+        mesg1 = pygame.font.SysFont(None, 33).render("You got " + place, True,
+                                                    WHITE)
         mes_rec = mesg1.get_rect(center=( 400/ 2, 500 / 4))
-        mes2_rec = mesg1.get_rect(center=(400 / 2, 500 / 3))
         scoreend = pygame.font.SysFont(None, 33).render("Score was: " + str(self.score), True,
                                                         WHITE)
         screen.blit(mesg1, mes_rec)
-        screen.blit(mesg2,mes2_rec)
         scoreend_rec = scoreend.get_rect(center=( 400/ 2,500 / 2))
         screen.blit(scoreend, scoreend_rec)
 
+
+set = False
+while not set:
+    red = input("Type Ready to get Ready: ")
+    if str(red).lower() == "ready":
+        set = True
+        s.send("Ready".encode("utf-8"))
+
+first = True
+
+while True:
+    s.send("Ready".encode("utf-8"))
+    s.send("Ready".encode("utf-8"))
+    s.send("Ready".encode("utf-8"))
+    msg = s.recv(1024).decode("utf-8")
+    if first:
+        print(msg)
+        first = False
+    if msg.lower().__contains__("start"):
+        break
 
 # Initialize the game engine
 pygame.init()
@@ -197,19 +219,16 @@ fig = Figure(20,10)
 counter = 0
 
 pressing_down = False
-
+dead = False
 while not done:
     if game.state == "gameover":
-        game.end_message()
+        if not dead:
+            game.end_message()
+            dead = True
         for event in pygame.event.get():
-            if event.type ==pygame.QUIT:
+            if event.type == pygame.KEYUP:
                 done = True
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_r:
-                    game.__init__(20,10)
-                    pressing_down = False
-                if event.key == pygame.K_q:
-                    done = True
+
     else:
         if game.figure is None:
             game.new_figure()
@@ -235,16 +254,6 @@ while not done:
                     game.go_side(1)
                 if event.key == pygame.K_SPACE:
                     game.go_space()
-                if event.key == pygame.K_ESCAPE:
-                    pause = True
-                    while pause:
-                        for event2 in pygame.event.get():
-                            if event2.type == pygame.QUIT:
-                                pause = False
-                                done = True
-                            if event2.type == pygame.KEYDOWN:
-                                if event2.key == pygame.K_ESCAPE:
-                                    pause = False
 
 
         if event.type == pygame.KEYUP:
@@ -271,7 +280,11 @@ while not done:
                                           game.y + game.zoom * (i + game.figure.y) + 1,
                                           game.zoom - 2, game.zoom - 2])
 
+
     pygame.display.flip()
     clock.tick(fps)
-
+s.send("Close".encode("utf-8"))
 pygame.quit()
+print("Press ENTER to exit")
+input()
+sys.exit()
