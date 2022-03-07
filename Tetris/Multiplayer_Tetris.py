@@ -4,7 +4,7 @@ import sys
 import pygame
 import random
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect(("192.168.188.24", 5000))
+s.connect(("192.168.49.202", 5000))
 colors = [
     (0, 0, 0),
     (153, 255, 255),
