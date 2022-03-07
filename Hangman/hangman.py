@@ -14,13 +14,15 @@ koerper = tk.PhotoImage(file="Assets/Körper.gif")
 pfahl = tk.PhotoImage(file="Assets/Pfahl.gif")
 seil = tk.PhotoImage(file="Assets/Seil.gif")
 
+#Überschrift
 lbl_ueb = tk.Label(window, text="Hangman", font=("Comic Sans MS", 30, "bold underline"))
-
-
+#Button zum Starten des Spiels
+btn_play = tk.Button(window, text="Spielen")
 
 
 
 #grid
-lbl_ueb.grid(row=0, column=1,padx=(240,0), pady=(5,0))
+lbl_ueb.grid(row=0, column=0,padx=(240,0), pady=(5,0))
+
 
 window.mainloop()
