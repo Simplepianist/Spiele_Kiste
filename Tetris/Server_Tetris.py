@@ -2,7 +2,7 @@ import socket
 from _thread import *
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.bind(("192.168.188.24", 5000))
+s.bind(("192.168.56.1", 5000))
 s.listen(1024)
 players = 0
 ready = 0
