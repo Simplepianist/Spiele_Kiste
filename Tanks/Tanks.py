@@ -16,10 +16,10 @@ Bullet = 3
 Bulletspeed = 15
 
 
-Panzer_WIDTH, Panzer_HEIGHT = 100, 60
+Panzer_WIDTH, Panzer_HEIGHT = 100, 50
 
 
-YELLOW_SPACESHIP_IMAGE = pygame.image.load('Assets/spaceship_yellow.png')
+YELLOW_SPACESHIP_IMAGE = pygame.image.load('assets/Panzer/tank_blau.png')
 
-YELLOW_SPACESHIP = pygame.transform.rotate(pygame.transform.scale(YELLOW_SPACESHIP_IMAGE, (SPACESHIP_WIDTH, SPACESHIP_HEIGHT)), 270)
+YELLOW_SPACESHIP = pygame.transform.rotate(pygame.transform.scale(YELLOW_SPACESHIP_IMAGE, (Panzer_WIDTH, Panzer_HEIGHT)), 270)
 
