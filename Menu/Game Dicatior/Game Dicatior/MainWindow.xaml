@@ -7,6 +7,10 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <Button Name="btn5" Width="50" Height="30" Click="OnClick5" Margin="312,212,430,177">
+            <Image Source="assets\flower.jpg"></Image>
+        </Button>
+        <Button Name="btn6" BorderBrush="Black">Click the picture.</Button>
+
     </Grid>
 </Window>
