@@ -1,41 +1,28 @@
-import pygame
+import tkinter as tk
+
+window = tk.Tk()
+
+window.minsize(650,400)
+window.maxsize(650,400)
+window.geometry("550x300")
+window.title("Hangman")
+
+arme = tk.PhotoImage(file="Assets/Arme.gif")
+beine = tk.PhotoImage(file="Assets/Beine.gif")
+kopf = tk.PhotoImage(file="Assets/Kopf.gif")
+koerper = tk.PhotoImage(file="Assets/Körper.gif")
+pfahl = tk.PhotoImage(file="Assets/Pfahl.gif")
+seil = tk.PhotoImage(file="Assets/Seil.gif")
+
+#Überschrift
+lbl_ueb = tk.Label(window, text="Hangman", font=("Comic Sans MS", 30, "bold underline"))
+#Button zum Starten des Spiels
+btn_play = tk.Button(window, text="Spielen", font=("Comic Sans MS", 20, "bold"))
 
 
-pygame.init()
 
-window = pygame.display.set_mode((640, 480))
+#grid
+lbl_ueb.grid(row=0, column=0,padx=(240,0), pady=(5,0))
+btn_play.grid(row=1, column=0, padx=(240,0), pady=(100, 0))
 
-pygame.display.set_caption("Hangman")
-
-#Farben
-white = (255, 255, 255)
-black = (0, 0, 0)
-green = (0, 255, 0)
-blue = (0, 0, 128)
-
-font = pygame.font.Font("freesansbold.ttf", 40)
-text = font.render("Hangman", True, black)
-
-textRect = text.get_rect()
-textRect.center = (640 // 2, 30)
-
-#Bilder einfügen
-pfahl = pygame.image.load('Assets/Pfahl.png')
-seil = pygame.image.load('Assets/Seil.png')
-koerper = pygame.image.load('Assets/Körper.png')
-kopf = pygame.image.load('Assets/Kopf.png')
-beine = pygame.image.load('Assets/Beine.png')
-arme = pygame.image.load('Assets/Arme.png')
-
-
-while True:
-    window.fill(white)
-
-    window.blit(text, textRect)
-
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            quit()
-    
-    pygame.display.update()
+window.mainloop()
