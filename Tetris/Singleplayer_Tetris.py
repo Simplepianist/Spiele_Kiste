@@ -65,6 +65,7 @@ class Tetris:
         self.score = 0
         self.state = "start"
         self.sound = True
+        self.show_score()
         try:
             self.breakline = pygame.mixer.Sound('assets/break.wav')
             self.end = pygame.mixer.Sound('assets/end.wav')
@@ -116,7 +117,13 @@ class Tetris:
                 if self.sound:
                     pygame.mixer.music.unpause()
         self.score += lines ** 2
+        self.show_score()
 
+    def show_score(self):
+        scoreend = pygame.font.SysFont(None, 20).render("Score: " + str(self.score), True,
+                                                        WHITE)
+        scoreend_rec = scoreend.get_rect(topleft=(0, 0))
+        screen.blit(scoreend, scoreend_rec)
 
     def go_space(self):
         while not self.intersects():
@@ -166,10 +173,11 @@ class Tetris:
 
         mes_rec = mesg1.get_rect(center=( 400/ 2, 500 / 4))
         mes2_rec = mesg1.get_rect(center=(400 / 2, 500 / 3))
-        scoreend = pygame.font.SysFont(None, 33).render("Score was: " + str(self.score), True,
-                                                        WHITE)
+
         screen.blit(mesg1, mes_rec)
         screen.blit(mesg2,mes2_rec)
+        scoreend = pygame.font.SysFont(None, 33).render("Score was: " + str(self.score), True,
+                                                        WHITE)
         scoreend_rec = scoreend.get_rect(center=( 400/ 2,500 / 2))
         screen.blit(scoreend, scoreend_rec)
 
@@ -270,7 +278,7 @@ while not done:
                                          [game.x + game.zoom * (j + game.figure.x) + 1,
                                           game.y + game.zoom * (i + game.figure.y) + 1,
                                           game.zoom - 2, game.zoom - 2])
-
+    game.show_score()
     pygame.display.flip()
     clock.tick(fps)
 
