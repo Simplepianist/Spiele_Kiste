@@ -234,7 +234,7 @@ while True:
                 if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                     if game.snake.direction != Vector2(-1, 0):
                         game.snake.direction = Vector2(1, 0)
-        screen.fill((142, 204, 57))#(0, 210, 30))
+        screen.fill((142, 204, 57))
         game.draw_elements()
         pygame.display.update()
         clock.tick(60)
