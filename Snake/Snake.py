@@ -112,17 +112,21 @@ class LOGIK:
         self.defeat = False
 
     def message(self):
-        mesg = pygame.font.SysFont(None, 33).render("You Lost! Q for Quiting and R to Play again", True,
-                                                    (255, 255, 255))
+        # Head message
+        head = pygame.font.SysFont(None, 80).render("Game Over!", True, (255, 0, 0));
+        head_rec = head.get_rect(center=(cell_number * cell_size / 2, cell_number * cell_size / 6))
+        screen.blit(head, head_rec)
+
+        mesg = pygame.font.SysFont(None, 33).render("Press Q to Quit or R to Play again", True, (255, 255, 255))
         mes_rec = mesg.get_rect(center=(cell_number * cell_size / 2, cell_number * cell_size / 3))
-        scoreend = pygame.font.SysFont(None, 33).render("Score was: " + str(len(self.snake.body) - 3), True,
-                                                        (255, 255, 255))
         screen.blit(mesg, mes_rec)
+
+        scoreend = pygame.font.SysFont(None, 33).render("Score was: " + str(len(self.snake.body) - 3), True, (255, 255, 255))
         scoreend_rec = scoreend.get_rect(center=(cell_number * cell_size / 2, cell_number * cell_size / 2))
         screen.blit(scoreend, scoreend_rec)
 
     def create_playfield(self):
-        grass_color = (167, 209, 61)
+        grass_color = (167, 217, 72)
 
         for row in range(cell_number):
             if row % 2 == 0:
@@ -164,7 +168,7 @@ class LOGIK:
                 self.defeat = True
 
         if self.defeat:
-            screen.fill("red")
+            screen.fill("black")
             game.message()
             pygame.display.update()
         return self.defeat
@@ -186,7 +190,7 @@ class LOGIK:
 
 
 pygame.init()
-game_font = pygame.font.Font(None, 25)
+game_font = pygame.font.Font(None, 40)
 cell_size = 25
 cell_number = 20
 screen = pygame.display.set_mode((cell_number * cell_size, cell_number * cell_size))
@@ -230,7 +234,7 @@ while True:
                 if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                     if game.snake.direction != Vector2(-1, 0):
                         game.snake.direction = Vector2(1, 0)
-        screen.fill((0, 210, 30))
+        screen.fill((142, 204, 57))#(0, 210, 30))
         game.draw_elements()
         pygame.display.update()
         clock.tick(60)
